@@ -41,7 +41,12 @@ void writeEntries(Entry[] entries)
 	entries.each { entry ->
 		if (entry.data) {
 			def output = new File("output/${entry.key}.txt")
-			output.text = getPlainText(decompress(entry.data)).trim()
+			try {
+				output.text = getPlainText(decompress(entry.data)).trim()
+			} catch (Exception e) {
+				println("[ERROR] Note ${entry.key} undecodable: ${e}");
+				output.text = "!!!Undecodable!!!"
+			}
 		}
 	}
 }
